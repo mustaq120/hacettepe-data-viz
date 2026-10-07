@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hacettepe Üniversitesi öğrencilerinin illere göre dağılımını görselleştiren bağımlılıksız dashboard.">
+  <title>Hacettepe | İl Dağılımı</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">H</span><div><strong>Hacettepe</strong><span>İl dağılımı dashboard</span></div></div>
+    <a class="text-link" href="#veri">Veri ve yöntem</a>
+  </header>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">ÖĞRENCİLİK • İL BAZINDA</p>
+        <h1>Hacettepe öğrencileri<br><em>nereden geliyor?</em></h1>
+        <p class="lede">İl bazındaki öğrenci sayılarını yoğunluk görünümü ve erişilebilir sıralama ile keşfedin.</p>
+      </div>
+      <div class="hero-badge"><span id="recordCount">81</span><small>il kaydı</small></div>
+    </section>
+
+    <section class="controls card" aria-labelledby="controls-title">
+      <div class="section-heading"><div><p class="eyebrow">VERİYİ DEĞİŞTİR</p><h2 id="controls-title">Dosyanı yükle</h2></div><span class="demo-label">● Demo veri</span></div>
+      <div class="control-grid">
+        <label class="file-drop" for="fileInput"><span class="upload-icon">↑</span><span><strong>CSV veya JSON seç</strong><small>Beklenen alanlar: il, ogrenci_sayisi</small></span><input id="fileInput" type="file" accept=".csv,.json,text/csv,application/json"></label>
+        <button id="demoButton" class="button secondary" type="button">Demo veriye dön</button>
+      </div>
+      <p id="status" class="status" role="status">Sentetik demo veri gösteriliyor. Gerçek veri değildir.</p>
+    </section>
+
+    <section class="summary-grid" aria-label="Özet bilgiler">
+      <article class="metric card"><span>Toplam öğrenci</span><strong id="totalStudents">—</strong><small id="yearSource">Yıl: Demo • Kaynak: Sentetik</small></article>
+      <article class="metric card"><span>En yoğun il</span><strong id="leadingProvince">—</strong><small id="leadingValue">— öğrenci</small></article>
+      <article class="metric card accent"><span>İl sayısı</span><strong id="provinceCount">—</strong><small>Veri setindeki benzersiz il</small></article>
+    </section>
+
+    <section class="card visualization" aria-labelledby="density-title">
+      <div class="section-heading"><div><p class="eyebrow">01 / YOĞUNLUK</p><h2 id="density-title">Türkiye’den gelenler</h2></div><span class="legend"><i></i>Az <b></b>Çok</span></div>
+      <p class="section-note">Her kutu bir ili temsil eder. Renk koyulaştıkça öğrenci sayısı artar.</p>
+      <div id="provinceGrid" class="province-grid" aria-label="İl yoğunluk görünümü"></div>
+    </section>
+
+    <section class="card ranking" aria-labelledby="ranking-title">
+      <div class="section-heading"><div><p class="eyebrow">02 / SIRALAMA</p><h2 id="ranking-title">İlk 10 il</h2></div><div class="export-actions"><button class="button small" id="svgButton" type="button">SVG indir</button><button class="button small primary" id="pngButton" type="button">PNG indir</button></div></div>
+      <p class="section-note">Değerler öğrenci sayısına göre büyükten küçüğe sıralanır.</p>
+      <div class="chart-wrap"><svg id="rankingChart" role="img" aria-labelledby="chartTitle chartDesc" viewBox="0 0 760 440"><title id="chartTitle">İlk 10 ilin öğrenci sayıları</title><desc id="chartDesc"></desc></svg></div>
+      <ol id="rankingList" class="sr-only"></ol>
+    </section>
+
+    <section class="instagram card" aria-labelledby="instagram-title">
+      <div class="section-heading"><div><p class="eyebrow">03 / PAYLAŞ</p><h2 id="instagram-title">Instagram önizleme</h2></div><span class="dimension">1080 × 1350 px</span></div>
+      <div class="preview-frame" id="previewFrame"><div class="preview-inner"><p class="eyebrow">HACETTEPE ÜNİVERSİTESİ</p><h3>Öğrenciler<br><em>nereden geliyor?</em></h3><div class="preview-chart" id="previewChart"></div><p class="preview-foot">İl bazında öğrenci dağılımı<br><span id="previewMeta">Demo veri • Sentetik</span></p></div></div>
+    </section>
+
+    <section id="veri" class="info-grid">
+      <article class="card info-card"><p class="eyebrow">VERİ TANIMI</p><h2>Ne gösteriyoruz?</h2><p><strong>İl</strong>, öğrencinin beyan edilen veya kaynakta yer alan ilidir. <strong>Öğrenci sayısı</strong>, o il ile eşleşen kayıtların toplamıdır. Aynı il birden fazla kez gelirse değerler birleştirilir.</p><p class="muted">Bu sayfa varsayılan olarak açıkça etiketlenmiş sentetik demo veri kullanır. Demo değerleri gerçek Hacettepe öğrenci dağılımını temsil etmez.</p></article>
+      <article class="card info-card"><p class="eyebrow">KAYNAK NOTU</p><h2>YÖK Atlas’a hazırlık</h2><ol><li>YÖK Atlas’tan ilgili program/kurum verisini resmi kanallardan indirin.</li><li>İl bilgisini tek sütunda <code>il</code>, sayıyı <code>ogrenci_sayisi</code> adıyla düzenleyin.</li><li>İsterseniz <code>yil</code> ve <code>kaynak</code> sütunlarını ekleyin.</li><li>Dosyayı yükleyin; doğrulama hataları kırmızı bildirim olarak görünür.</li></ol><p class="muted">Kaynak: Kullanıcının yüklediği dosya. Resmi veri için YÖK Atlas lisans ve kullanım koşullarını kontrol edin.</p></article>
+    </section>
+    <footer><span>Hacettepe il dağılımı • Bağımlılıksız, tarayıcıda çalışan demo</span><a href="#veri">Veri tanımı ve kaynak</a></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
