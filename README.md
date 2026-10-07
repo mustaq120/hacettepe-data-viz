@@ -29,6 +29,18 @@ VarAtlas'ın iddia ettiği upstream kaynaklar [ÖSYM YKS yerleştirme kılavuzla
 
 Kullanıcı, VarAtlas'taki ilgili program sayfasından kamuya açık ve kişisel olmayan toplulaştırılmış tabloyu kendi tarayıcısıyla indirip/CSV'ye dönüştürüp yükleyebilir. Kaynak ve erişim tarihini `kaynak` alanında görünür tutun; örneğin `VarAtlas program sayfası, erişim 2026-10-07`. Bu akış, güvenli manuel indirme + yerel içe aktarma yaklaşımıdır. VarAtlas/ÖSYM/YÖK Atlas için bu proje içinde ayrıca bir lisans varsayılmaz; kullanımda ilgili sitelerin güncel koşulları kontrol edilmelidir.
 
+### Bir defalık program importu
+
+Kamuya açık Hacettepe üniversite sayfasından program ID'lerini keşfedip her programın public JSON payload'ını 1 saniye aralıkla çekmek için `tools/varatlas_import.py` kullanılır. Script yalnızca `https://varatlas.com/universite/...`, `/detay/...` bağlantılarını ve `https://data.varatlas.com/jsons_merged/{programId}.json` adresini kullanır; robots.txt ile yasaklı toplu dökümlere gitmez.
+
+```bash
+python tools/varatlas_import.py --year 2025
+```
+
+Ham yanıtlar `data/varatlas-cache/{programId}.json` altında tutulur ve `.gitignore` ile commit dışı bırakılır. `data/varatlas-cache/report.json` her programın başarı/atlama/hata durumunu saklar; ağ veya JSON hatası varsa script 1 koduyla durur ve demo veriye sessizce dönmez. Lise okul adları ham cache'te kalsa da üretilen `data/varatlas-2025-il.csv` yalnızca il, toplam öğrenci sayısı, yıl ve kaynak içerir; dashboard'a okul adı aktarılmaz. Program payload'ında il bilgisi olmayan (ör. bazı Kıbrıs liseleri) ya da lise dağılımı olmayan programlar raporda `skipped_no_province_data` olarak açıkça listelenir.
+
+7 Ekim 2026'daki tek seferlik çalışmada 117 public Hacettepe program ID'si bulundu; 78 programdan 80 il toplulaştırıldı, 39 programda kamuya açık Türk il satırı bulunmadığı için çıktı dışında bırakıldı. Bu çıktı, tüm Hacettepe öğrencilerinin ikamet ili değil; VarAtlas'ın tanımına göre 2025 program yerleşenlerinin **mezun oldukları liselerin konumları** üzerinden hesaplanan, programların birleştirilmiş toplulaştırmasıdır.
+
 ## Notlar
 
 - Başlangıç ekranındaki kayıtlar **sentetik demo veridir; gerçek Hacettepe dağılımını temsil etmez**.
